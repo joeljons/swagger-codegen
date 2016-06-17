@@ -6,8 +6,6 @@ import {{package}}.factories.{{classname}}ServiceFactory;
 
 import io.swagger.annotations.ApiParam;
 
-import com.sun.jersey.multipart.FormDataParam;
-
 {{#imports}}import {{import}};
 {{/imports}}
 
@@ -16,9 +14,7 @@ import {{package}}.NotFoundException;
 
 import java.io.InputStream;
 
-import com.sun.jersey.core.header.FormDataContentDisposition;
-import com.sun.jersey.multipart.FormDataParam;
-
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
@@ -49,9 +45,9 @@ public class {{classname}}  {
         @io.swagger.annotations.ApiResponse(code = {{{code}}}, message = "{{{message}}}", response = {{{returnType}}}.class{{#returnContainer}}, responseContainer = "{{{returnContainer}}}"{{/returnContainer}}){{#hasMore}},{{/hasMore}}{{/responses}} })
     public Response {{nickname}}(
         {{#allParams}}{{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}},
-        {{/allParams}}@Context SecurityContext securityContext)
+        {{/allParams}}@Context SecurityContext securityContext, @Context HttpServletRequest request)
     throws NotFoundException {
-        return delegate.{{nickname}}({{#allParams}}{{#isFile}}inputStream, fileDetail{{/isFile}}{{^isFile}}{{paramName}}{{/isFile}},{{/allParams}}securityContext);
+        return delegate.{{nickname}}({{#allParams}}{{#isFile}}inputStream{{/isFile}}{{^isFile}}{{paramName}}{{/isFile}},{{/allParams}}securityContext);
     }
 {{/operation}}
 }
